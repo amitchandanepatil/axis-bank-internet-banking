@@ -1,0 +1,108 @@
+package com.axisbank.authservice.service;
+
+import java.sql.Timestamp;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.axisbank.authservice.dto.LoginRequest;
+import com.axisbank.authservice.dto.RegistrationRequest;
+import com.axisbank.authservice.entity.Customer;
+import com.axisbank.authservice.repository.CustomerRepository;
+
+@Service
+public class AuthService {
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public Customer login(LoginRequest request) {
+
+        Customer customer =
+                customerRepository.findByCustomerId(
+                        request.getCustomerId());
+
+        if (customer != null &&
+                passwordEncoder.matches(
+                        request.getPassword(),
+                        customer.getPassword())) {
+
+            return customer;
+        }
+
+        return null;
+    }
+
+    public String generateCustomerId() {
+
+        long count =
+                customerRepository.count()
+                        + 100001;
+
+        return "CUST" + count;
+    }
+
+    public String register(
+            RegistrationRequest request) {
+
+        Customer existingCustomer =
+                customerRepository
+                        .findByAccountNumber(
+                                request.getAccountNumber());
+
+        if (existingCustomer != null) {
+
+            return "Account already registered!";
+        }
+
+        Customer customer =
+                new Customer();
+
+        customer.setCustomerId(
+                generateCustomerId());
+
+        customer.setFullName(
+                request.getFullName());
+
+        customer.setMobileNumber(
+                request.getMobileNumber());
+
+        customer.setEmail(
+                request.getEmail());
+
+        customer.setAadhaarNumber(
+                request.getAadhaarNumber());
+
+        customer.setPanNumber(
+                request.getPanNumber());
+
+        customer.setAccountNumber(
+                request.getAccountNumber());
+
+        customer.setPassword(
+                passwordEncoder.encode(
+                        request.getPassword()));
+
+        customer.setAccountType(
+                request.getAccountType());
+
+        customer.setBalance(0.0);
+
+        customer.setStatus(
+                "ACTIVE");
+
+        customer.setCreatedDate(
+                new Timestamp(
+                        System.currentTimeMillis()));
+
+        customerRepository.save(
+                customer);
+
+        return "Registration Successful. Your Customer ID: "
+                + customer.getCustomerId();
+    }
+}

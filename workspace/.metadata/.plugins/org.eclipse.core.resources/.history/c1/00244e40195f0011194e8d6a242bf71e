@@ -1,0 +1,10 @@
+server.port=8084
+
+spring.datasource.url=jdbc:mysql://localhost:3306/axisbankdb
+spring.datasource.username=root
+spring.datasource.password=Chandane123#
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect

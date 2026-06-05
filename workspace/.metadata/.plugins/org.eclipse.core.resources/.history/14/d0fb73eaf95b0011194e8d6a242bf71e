@@ -1,0 +1,28 @@
+package com.axisbank.authservice.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.axisbank.authservice.dto.LoginRequest;
+import com.axisbank.authservice.entity.Customer;
+import com.axisbank.authservice.repository.UserRepository;
+
+@Service
+public class AuthService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public Customer login(LoginRequest request) {
+
+        Customer user = userRepository.findByUsername(request.getUsername());
+
+        if(user != null &&
+           user.getPassword().equals(request.getPassword())) {
+
+            return user;
+        }
+
+        return null;
+    }
+}

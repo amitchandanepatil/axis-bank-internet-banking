@@ -1,0 +1,295 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f4f6f9;
+}
+
+/* LOGIN PAGE */
+
+.login-page {
+  display: flex;
+  height: 100vh;
+}
+
+.left-panel {
+  width: 50%;
+  background: linear-gradient(135deg,#97144d,#c2185b);
+  color: white;
+  padding: 80px;
+}
+
+.left-panel h1 {
+  font-size: 50px;
+}
+
+.left-panel h2 {
+  margin-top: 20px;
+}
+
+.left-panel p {
+  margin-top: 20px;
+}
+
+.left-panel ul {
+  margin-top: 30px;
+}
+
+.left-panel li {
+  margin-top: 12px;
+}
+
+.right-panel {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  width: 420px;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.15);
+}
+
+.login-box h2 {
+  color: #97144d;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.link-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.link-row a {
+  color: #97144d;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #97144d;
+  color: white;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-link a {
+  margin-left: 5px;
+  color: #97144d;
+  font-weight: bold;
+}
+
+/* REGISTER PAGE */
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg,#97144d,#c2185b);
+}
+
+.register-box {
+  width: 600px;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.register-box h1 {
+  color: #97144d;
+  text-align: center;
+}
+
+.register-box p {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.register-box input,
+.register-box select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 12px;
+  background: #97144d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.register-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.register-footer a {
+  color: #97144d;
+  margin-left: 5px;
+}
+
+/* DASHBOARD */
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background: #97144d;
+  color: white;
+}
+
+.logo-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.axis-logo {
+  width: 140px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  padding: 18px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar li:hover {
+  background: #7d103f;
+}
+
+.main-content {
+  flex: 1;
+  padding: 25px;
+}
+
+.top-navbar {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.card {
+  flex: 1;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  color: #97144d;
+  margin-bottom: 15px;
+}
+
+.card button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #97144d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.quick-services {
+  display: flex;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.service-card {
+  flex: 1;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.transaction-section {
+  background: white;
+  margin-top: 25px;
+  padding: 25px;
+  border-radius: 10px;
+}
+
+.transaction-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.transaction-section th {
+  background: #97144d;
+  color: white;
+}
+
+.transaction-section th,
+.transaction-section td {
+  border: 1px solid #ddd;
+  padding: 12px;
+}
+
+@media(max-width:900px) {
+
+  .sidebar {
+    display: none;
+  }
+
+  .cards,
+  .quick-services {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    display: none;
+  }
+
+  .right-panel {
+    width: 100%;
+  }
+}

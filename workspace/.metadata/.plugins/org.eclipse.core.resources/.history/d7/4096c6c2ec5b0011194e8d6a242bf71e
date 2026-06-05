@@ -1,0 +1,30 @@
+package com.axisbank.authservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.axisbank.authservice.dto.LoginRequest;
+import com.axisbank.authservice.entity.User;
+import com.axisbank.authservice.service.AuthService;
+
+@RestController
+@RequestMapping("/auth")
+//@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "*")
+public class AuthController {
+
+    @Autowired
+    private AuthService authService;
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest request) {
+
+        User user = authService.login(request);
+
+        if(user != null) {
+            return "Login Successful";
+        }
+
+        return "Invalid Username or Password";
+    }
+}
