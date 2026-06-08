@@ -1,0 +1,24 @@
+package com.axisbank.authservice.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.axisbank.authservice.entity.Transaction;
+import com.axisbank.authservice.repository.TransactionRepository;
+
+@Service
+public class TransactionService {
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
+    public List<Transaction> getTransactions(
+            String accountNumber) {
+
+        return transactionRepository
+                .findByAccountNumberOrderByTransactionDateDesc(
+                        accountNumber);
+    }
+}

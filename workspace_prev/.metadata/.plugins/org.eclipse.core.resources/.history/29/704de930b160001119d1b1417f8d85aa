@@ -1,0 +1,140 @@
+package com.axisbank.authservice.service;
+
+import java.sql.Timestamp;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.axisbank.authservice.dto.LoginRequest;
+import com.axisbank.authservice.dto.RegistrationRequest;
+import com.axisbank.authservice.entity.Account;
+import com.axisbank.authservice.entity.Customer;
+import com.axisbank.authservice.repository.AccountRepository;
+import com.axisbank.authservice.repository.CustomerRepository;
+
+@Service
+public class AuthService {
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public Customer login(LoginRequest request) {
+
+        Customer customer =
+                customerRepository.findByCustomerId(
+                        request.getCustomerId());
+
+        if (customer != null &&
+                passwordEncoder.matches(
+                        request.getPassword(),
+                        customer.getPassword())) {
+
+            return customer;
+        }
+
+        return null;
+    }
+
+    public String generateCustomerId() {
+
+        long count =
+                customerRepository.count()
+                        + 100001;
+
+        return "CUST" + count;
+    }
+
+    public String generateAccountNumber() {
+
+        Random random = new Random();
+
+        return "918020"
+                + (100000 + random.nextInt(900000));
+    }
+
+    public String register(
+            RegistrationRequest request) {
+
+        Customer existingCustomer =
+                customerRepository.findByAccountNumber(
+                        request.getAccountNumber());
+
+        if (existingCustomer != null) {
+
+            return "Account already registered!";
+        }
+
+        Customer customer = new Customer();
+
+        customer.setCustomerId(
+                generateCustomerId());
+
+        customer.setFullName(
+                request.getFullName());
+
+        customer.setMobileNumber(
+                request.getMobileNumber());
+
+        customer.setEmail(
+                request.getEmail());
+
+        customer.setAadhaarNumber(
+                request.getAadhaarNumber());
+
+        customer.setPanNumber(
+                request.getPanNumber());
+
+        customer.setAccountNumber(
+                generateAccountNumber());
+
+        customer.setPassword(
+                passwordEncoder.encode(
+                        request.getPassword()));
+
+        customer.setAccountType(
+                request.getAccountType());
+
+        customer.setBalance(5000.0);
+
+        customer.setStatus("ACTIVE");
+
+        customer.setCreatedDate(
+                new Timestamp(
+                        System.currentTimeMillis()));
+
+        customerRepository.save(customer);
+
+        Account account = new Account();
+
+        account.setAccountNumber(
+                customer.getAccountNumber());
+
+        account.setCustomerId(
+                customer.getCustomerId());
+
+        account.setAccountType(
+                customer.getAccountType());
+
+        account.setBranchName(
+                "Pune Main Branch");
+
+        account.setIfscCode(
+                "UTIB0000001");
+
+        account.setBalance(
+                5000.0);
+
+        accountRepository.save(account);
+
+        return "Registration Successful. Your Customer ID: "
+                + customer.getCustomerId();
+    }
+}

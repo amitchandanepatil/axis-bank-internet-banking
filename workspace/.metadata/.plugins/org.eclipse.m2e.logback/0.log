@@ -1456,3 +1456,4 @@
 2026-06-04 11:29:32,585 [Worker-452: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
 2026-06-04 11:29:32,594 [Worker-452: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
 2026-06-04 11:29:32,599 [Worker-452: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory F:\DevOps Project\axis-bank-internet-banking\workspace\auth-service\src\test\resources
+2026-06-07 20:51:34,259 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
