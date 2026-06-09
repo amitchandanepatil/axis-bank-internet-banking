@@ -1,5 +1,0 @@
-package com.axisbank.authservice.entity;
-
-public class User {
-
-}

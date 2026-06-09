@@ -1,5 +1,0 @@
-package com.axisbank.authservice.repository;
-
-public interface UserRepository {
-
-}
