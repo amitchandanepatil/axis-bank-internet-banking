@@ -1,0 +1,6 @@
+workspace/.metadata/
+workspace/.sonarlint/
+frontend/.env
+*.log
+target/
+node_modules/

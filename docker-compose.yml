@@ -1,0 +1,28 @@
+services:
+  backend:
+    image: amitchandane693/axis-backend:latest
+    container_name: axis-backend-container
+    ports:
+      - "8084:8084"
+    restart: always
+
+  frontend:
+    image: amitchandane693/axis-frontend:latest
+    container_name: axis-frontend-container
+    expose:
+      - "3000"
+    depends_on:
+      - backend
+    restart: always
+
+  nginx:
+    image: nginx:latest
+    container_name: axis-nginx-container
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    restart: always
