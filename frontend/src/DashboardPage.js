@@ -27,7 +27,7 @@ function DashboardPage() {
     setCustomer(loggedInCustomer);
 
     fetch(
-      `http://localhost:8084/account/${loggedInCustomer.customerId}`
+      `/api/account/${loggedInCustomer.customerId}`
     )
       .then(response => response.json())
       .then(accountData => {
@@ -35,7 +35,7 @@ function DashboardPage() {
         setAccount(accountData);
 
         return fetch(
-          `http://localhost:8084/transaction/${accountData.accountNumber}`
+          `/api/transaction/${accountData.accountNumber}`
         );
       })
       .then(response => response.json())

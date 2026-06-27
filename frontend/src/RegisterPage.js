@@ -44,7 +44,7 @@ function RegisterPage() {
 
       const response =
         await fetch(
-          "http://localhost:8084/auth/register",
+          "/api/auth/register",
           {
             method: "POST",
             headers: {
