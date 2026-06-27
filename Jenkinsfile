@@ -18,7 +18,10 @@ pipeline {
         stage('Build Backend Jar') {
             steps {
                 dir('workspace/auth-service') {
-                    sh './mvnw clean package -DskipTests'
+                    sh '''
+                    chmod +x mvnw
+                    ./mvnw clean package -DskipTests
+                    '''
                 }
             }
         }
@@ -39,7 +42,6 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
@@ -53,9 +55,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                docker compose down
+                docker rm -f axis-backend-container || true
+                docker rm -f axis-frontend-container || true
+                docker rm -f axis-nginx-container || true
+
+                docker compose down || true
                 docker compose pull
                 docker compose up -d
+                docker ps
                 '''
             }
         }
