@@ -1,46 +1,9 @@
-//package com.axisbank.authservice.config;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.http.SessionCreationPolicy;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.web.SecurityFilterChain;
-//
-//@Configuration
-//public class SecurityConfig {
-//
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//
-//        http
-//            .csrf(csrf -> csrf.disable())
-//            .cors(cors -> cors.disable())
-//            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//            .authorizeHttpRequests(auth -> auth
-//                .anyRequest().permitAll()   // 🔥 TEMP: allow everything
-//            )
-//            .formLogin(form -> form.disable())
-//            .httpBasic(basic -> basic.disable());
-//
-//        return http.build();
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//}
-
-
-//This below is earlier code before deploy
 package com.axisbank.authservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -49,31 +12,48 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
+            HttpSecurity http
+    ) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
 
+            .cors(cors -> cors.disable())
+
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
+            )
+
             .authorizeHttpRequests(auth -> auth
 
-            		.requestMatchers(
-            		        "/auth/login",
-            		        "/auth/register",
-            		        "/account/**",
-            		        "/transaction/**")
+                .requestMatchers(
+                    "/auth/login",
+                    "/auth/register",
+                    "/auth/forgot-password/**",
+
+                    "/account/**",
+                    "/transaction/**",
+                    "/fd/**",
+                    "/rd/**"
+                )
                 .permitAll()
 
                 .anyRequest()
                 .authenticated()
             )
 
-            .httpBasic(Customizer.withDefaults());
+            .formLogin(form -> form.disable())
+
+            .httpBasic(httpBasic ->
+                httpBasic.disable()
+            );
 
         return http.build();
     }
