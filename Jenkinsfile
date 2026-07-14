@@ -19,8 +19,8 @@ pipeline {
             steps {
                 dir('workspace/auth-service') {
                     sh '''
-                    chmod +x mvnw
-                    ./mvnw clean package -DskipTests
+                        chmod +x mvnw
+                        ./mvnw clean package -DskipTests
                     '''
                 }
             }
@@ -28,8 +28,10 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker build -t $BACKEND_IMAGE workspace/auth-service'
-                sh 'docker build -t $FRONTEND_IMAGE frontend'
+                sh '''
+                    docker build -t $BACKEND_IMAGE workspace/auth-service
+                    docker build -t $FRONTEND_IMAGE frontend
+                '''
             }
         }
 
@@ -43,10 +45,12 @@ pipeline {
                     )
                 ]) {
                     sh '''
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        echo "$DOCKER_PASS" | docker login \
+                          -u "$DOCKER_USER" \
+                          --password-stdin
 
-                    docker push $BACKEND_IMAGE
-                    docker push $FRONTEND_IMAGE
+                        docker push "$BACKEND_IMAGE"
+                        docker push "$FRONTEND_IMAGE"
                     '''
                 }
             }
@@ -54,16 +58,36 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh '''
-                docker rm -f axis-backend-container || true
-                docker rm -f axis-frontend-container || true
-                docker rm -f axis-nginx-container || true
+                withCredentials([
+                    string(
+                        credentialsId: 'axis-rds-url',
+                        variable: 'DB_URL'
+                    ),
+                    usernamePassword(
+                        credentialsId: 'axis-rds-creds',
+                        usernameVariable: 'DB_USERNAME',
+                        passwordVariable: 'DB_PASSWORD'
+                    )
+                ]) {
+                    sh '''
+                        export DB_URL
+                        export DB_USERNAME
+                        export DB_PASSWORD
 
-                docker compose down || true
-                docker compose pull
-                docker compose up -d
-                docker ps
-                '''
+                        docker rm -f axis-backend-container || true
+                        docker rm -f axis-frontend-container || true
+                        docker rm -f axis-nginx-container || true
+
+                        docker compose down || true
+                        docker compose pull
+                        docker compose up -d
+
+                        sleep 25
+
+                        docker ps
+                        docker logs axis-backend-container --tail 100
+                    '''
+                }
             }
         }
     }
