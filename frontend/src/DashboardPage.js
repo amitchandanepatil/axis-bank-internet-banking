@@ -19,7 +19,6 @@ function DashboardPage() {
   const [recurringDeposits, setRecurringDeposits] = useState([]);
   const [activeSection, setActiveSection] = useState("DASHBOARD");
   const [language, setLanguage] = useState("en");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [fdToClose, setFdToClose] = useState(null);
   const [rdToClose, setRdToClose] = useState(null);
   const [transferData, setTransferData] = useState({
@@ -208,33 +207,6 @@ const calculateRdMaturityDate = () => {
     setCustomer(loggedInCustomer);
     refreshDashboardData(loggedInCustomer);
   }, [navigate]);
-
-  useEffect(() => {
-    const closeMenuOnDesktop = () => {
-      if (window.innerWidth > 900 && !window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    const closeMenuOnEscape = (event) => {
-      if (event.key === "Escape") {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    window.addEventListener("resize", closeMenuOnDesktop);
-    document.addEventListener("keydown", closeMenuOnEscape);
-
-    return () => {
-      window.removeEventListener("resize", closeMenuOnDesktop);
-      document.removeEventListener("keydown", closeMenuOnEscape);
-    };
-  }, []);
-
-  const selectSection = (section) => {
-    setActiveSection(section);
-    setMobileMenuOpen(false);
-  };
 
   const logout = () => {
     localStorage.removeItem("customer");
@@ -569,17 +541,6 @@ const totalRdMaturity = activeRds.reduce(
           <span className="internet-text">PRIME</span>
         </div>
 
-        <button
-          type="button"
-          className="dashboard-menu-toggle"
-          aria-label={mobileMenuOpen ? "Close dashboard menu" : "Open dashboard menu"}
-          aria-expanded={mobileMenuOpen}
-          onClick={() => setMobileMenuOpen((current) => !current)}
-        >
-          <span aria-hidden="true">{mobileMenuOpen ? "✕" : "☰"}</span>
-          <span>{mobileMenuOpen ? "Close" : "Menu"}</span>
-        </button>
-
         <div className="axis-prime-actions">
           <select
             className="language-select"
@@ -602,60 +563,51 @@ const totalRdMaturity = activeRds.reduce(
         </div>
       </div>
 
-      {mobileMenuOpen && (
-        <button
-          type="button"
-          className="dashboard-sidebar-overlay"
-          aria-label="Close dashboard navigation"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
       <div className="dashboard-container">
-        <aside className={`sidebar ${mobileMenuOpen ? "sidebar-open" : ""}`} aria-label="Dashboard navigation">
+        <div className="sidebar">
           <ul>
-            <li className={activeSection === "DASHBOARD" ? "active-menu" : ""} onClick={() => selectSection("DASHBOARD")}>
+            <li className={activeSection === "DASHBOARD" ? "active-menu" : ""} onClick={() => setActiveSection("DASHBOARD")}>
               🏠 {text("dashboard", "Dashboard")}
             </li>
 
-            <li className={activeSection === "ACCOUNTS" ? "active-menu" : ""} onClick={() => selectSection("ACCOUNTS")}>
+            <li className={activeSection === "ACCOUNTS" ? "active-menu" : ""} onClick={() => setActiveSection("ACCOUNTS")}>
               💳 {text("accounts", "Accounts")}
             </li>
 
-            <li className={activeSection === "FD" ? "active-menu" : ""} onClick={() => selectSection("FD")}>
+            <li className={activeSection === "FD" ? "active-menu" : ""} onClick={() => setActiveSection("FD")}>
               🏦 {text("fixedDeposit", "Fixed Deposit")}
             </li>
 
-            <li className={activeSection === "MY_FD" ? "active-menu" : ""} onClick={() => selectSection("MY_FD")}>
+            <li className={activeSection === "MY_FD" ? "active-menu" : ""} onClick={() => setActiveSection("MY_FD")}>
               💰 My Deposits
             </li>
 
-            <li className={activeSection === "RD" ? "active-menu" : ""} onClick={() => selectSection("RD")}>
+            <li className={activeSection === "RD" ? "active-menu" : ""} onClick={() => setActiveSection("RD")}>
               📈 {text("recurringDeposit", "Recurring Deposit")}
             </li>
 
             <li
   className={activeSection === "MY_RD" ? "active-menu" : ""}
-  onClick={() => selectSection("MY_RD")}
+  onClick={() => setActiveSection("MY_RD")}
 >
   💰 My RD
 </li>
 
-            <li className={activeSection === "FUND_TRANSFER" ? "active-menu" : ""} onClick={() => selectSection("FUND_TRANSFER")}>
+            <li className={activeSection === "FUND_TRANSFER" ? "active-menu" : ""} onClick={() => setActiveSection("FUND_TRANSFER")}>
               💸 {text("fundTransfer", "Fund Transfer")}
             </li>
 
-            <li className={activeSection === "TRANSACTIONS" ? "active-menu" : ""} onClick={() => selectSection("TRANSACTIONS")}>
+            <li className={activeSection === "TRANSACTIONS" ? "active-menu" : ""} onClick={() => setActiveSection("TRANSACTIONS")}>
               📄 {text("transactions", "Transactions")}
             </li>
 
-            <li className={activeSection === "PROFILE" ? "active-menu" : ""} onClick={() => selectSection("PROFILE")}>
+            <li className={activeSection === "PROFILE" ? "active-menu" : ""} onClick={() => setActiveSection("PROFILE")}>
               👤 {text("profile", "Profile")}
             </li>
 
             <li onClick={logout}>🚪 {text("logout", "Logout")}</li>
           </ul>
-        </aside>
+        </div>
 
         <div className="main-content" ref={mainRef}>
           <div className="axis-welcome-row">
