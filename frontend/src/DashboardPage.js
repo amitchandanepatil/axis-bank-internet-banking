@@ -19,9 +19,9 @@ function DashboardPage() {
   const [recurringDeposits, setRecurringDeposits] = useState([]);
   const [activeSection, setActiveSection] = useState("DASHBOARD");
   const [language, setLanguage] = useState("en");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [fdToClose, setFdToClose] = useState(null);
   const [rdToClose, setRdToClose] = useState(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [transferData, setTransferData] = useState({
     toAccount: "",
     amount: "",
@@ -44,14 +44,6 @@ function DashboardPage() {
   const text = (key, fallback) => t[key] || translations.en[key] || fallback;
   const upper = (value, fallback) =>
     String(value || fallback || "").toUpperCase();
-
-  const handleSectionChange = (section) => {
-    setActiveSection(section);
-    setIsMobileMenuOpen(false);
-    window.setTimeout(() => {
-      mainRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 0);
-  };
 
   const getCustomerName = () => {
     return (
@@ -218,29 +210,33 @@ const calculateRdMaturityDate = () => {
   }, [navigate]);
 
   useEffect(() => {
-    const closeMobileMenu = () => {
-      if (window.innerWidth > 900) {
-        setIsMobileMenuOpen(false);
+    const closeMenuOnDesktop = () => {
+      if (window.innerWidth > 900 && !window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+        setMobileMenuOpen(false);
       }
     };
 
-    const closeOnEscape = (event) => {
+    const closeMenuOnEscape = (event) => {
       if (event.key === "Escape") {
-        setIsMobileMenuOpen(false);
+        setMobileMenuOpen(false);
       }
     };
 
-    window.addEventListener("resize", closeMobileMenu);
-    window.addEventListener("keydown", closeOnEscape);
+    window.addEventListener("resize", closeMenuOnDesktop);
+    document.addEventListener("keydown", closeMenuOnEscape);
 
     return () => {
-      window.removeEventListener("resize", closeMobileMenu);
-      window.removeEventListener("keydown", closeOnEscape);
+      window.removeEventListener("resize", closeMenuOnDesktop);
+      document.removeEventListener("keydown", closeMenuOnEscape);
     };
   }, []);
 
+  const selectSection = (section) => {
+    setActiveSection(section);
+    setMobileMenuOpen(false);
+  };
+
   const logout = () => {
-    setIsMobileMenuOpen(false);
     localStorage.removeItem("customer");
     navigate("/");
   };
@@ -575,13 +571,13 @@ const totalRdMaturity = activeRds.reduce(
 
         <button
           type="button"
-          className="mobile-menu-button"
-          aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-          aria-expanded={isMobileMenuOpen}
-          onClick={() => setIsMobileMenuOpen((open) => !open)}
+          className="dashboard-menu-toggle"
+          aria-label={mobileMenuOpen ? "Close dashboard menu" : "Open dashboard menu"}
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((current) => !current)}
         >
-          <span>{isMobileMenuOpen ? "✕" : "☰"}</span>
-          <span>Menu</span>
+          <span aria-hidden="true">{mobileMenuOpen ? "✕" : "☰"}</span>
+          <span>{mobileMenuOpen ? "Close" : "Menu"}</span>
         </button>
 
         <div className="axis-prime-actions">
@@ -606,54 +602,54 @@ const totalRdMaturity = activeRds.reduce(
         </div>
       </div>
 
-      <div className="dashboard-container">
-        {isMobileMenuOpen && (
-          <button
-            type="button"
-            className="mobile-sidebar-overlay"
-            aria-label="Close navigation menu"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-        )}
+      {mobileMenuOpen && (
+        <button
+          type="button"
+          className="dashboard-sidebar-overlay"
+          aria-label="Close dashboard navigation"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
-        <aside className={`sidebar ${isMobileMenuOpen ? "sidebar-open" : ""}`}>
+      <div className="dashboard-container">
+        <aside className={`sidebar ${mobileMenuOpen ? "sidebar-open" : ""}`} aria-label="Dashboard navigation">
           <ul>
-            <li className={activeSection === "DASHBOARD" ? "active-menu" : ""} onClick={() => handleSectionChange("DASHBOARD")}>
+            <li className={activeSection === "DASHBOARD" ? "active-menu" : ""} onClick={() => selectSection("DASHBOARD")}>
               🏠 {text("dashboard", "Dashboard")}
             </li>
 
-            <li className={activeSection === "ACCOUNTS" ? "active-menu" : ""} onClick={() => handleSectionChange("ACCOUNTS")}>
+            <li className={activeSection === "ACCOUNTS" ? "active-menu" : ""} onClick={() => selectSection("ACCOUNTS")}>
               💳 {text("accounts", "Accounts")}
             </li>
 
-            <li className={activeSection === "FD" ? "active-menu" : ""} onClick={() => handleSectionChange("FD")}>
+            <li className={activeSection === "FD" ? "active-menu" : ""} onClick={() => selectSection("FD")}>
               🏦 {text("fixedDeposit", "Fixed Deposit")}
             </li>
 
-            <li className={activeSection === "MY_FD" ? "active-menu" : ""} onClick={() => handleSectionChange("MY_FD")}>
+            <li className={activeSection === "MY_FD" ? "active-menu" : ""} onClick={() => selectSection("MY_FD")}>
               💰 My Deposits
             </li>
 
-            <li className={activeSection === "RD" ? "active-menu" : ""} onClick={() => handleSectionChange("RD")}>
+            <li className={activeSection === "RD" ? "active-menu" : ""} onClick={() => selectSection("RD")}>
               📈 {text("recurringDeposit", "Recurring Deposit")}
             </li>
 
             <li
   className={activeSection === "MY_RD" ? "active-menu" : ""}
-  onClick={() => handleSectionChange("MY_RD")}
+  onClick={() => selectSection("MY_RD")}
 >
   💰 My RD
 </li>
 
-            <li className={activeSection === "FUND_TRANSFER" ? "active-menu" : ""} onClick={() => handleSectionChange("FUND_TRANSFER")}>
+            <li className={activeSection === "FUND_TRANSFER" ? "active-menu" : ""} onClick={() => selectSection("FUND_TRANSFER")}>
               💸 {text("fundTransfer", "Fund Transfer")}
             </li>
 
-            <li className={activeSection === "TRANSACTIONS" ? "active-menu" : ""} onClick={() => handleSectionChange("TRANSACTIONS")}>
+            <li className={activeSection === "TRANSACTIONS" ? "active-menu" : ""} onClick={() => selectSection("TRANSACTIONS")}>
               📄 {text("transactions", "Transactions")}
             </li>
 
-            <li className={activeSection === "PROFILE" ? "active-menu" : ""} onClick={() => handleSectionChange("PROFILE")}>
+            <li className={activeSection === "PROFILE" ? "active-menu" : ""} onClick={() => selectSection("PROFILE")}>
               👤 {text("profile", "Profile")}
             </li>
 
@@ -661,7 +657,7 @@ const totalRdMaturity = activeRds.reduce(
           </ul>
         </aside>
 
-        <main className="main-content" ref={mainRef}>
+        <div className="main-content" ref={mainRef}>
           <div className="axis-welcome-row">
             <h2>Hi,{upper(getCustomerName(), "CUSTOMER")}</h2>
 
@@ -674,7 +670,7 @@ const totalRdMaturity = activeRds.reduce(
 
           {activeSection !== "DASHBOARD" && (
             <div className="breadcrumb-row">
-              <span onClick={() => handleSectionChange("DASHBOARD")}>
+              <span onClick={() => setActiveSection("DASHBOARD")}>
                 {text("backToDashboard", "Back to Dashboard")}
               </span>
               <b>/</b>
@@ -722,7 +718,7 @@ const totalRdMaturity = activeRds.reduce(
       <b>{account?.accountNumber || "-"}</b>
     </div>
 
-    <button onClick={() => handleSectionChange("ACCOUNTS")}>
+    <button onClick={() => setActiveSection("ACCOUNTS")}>
       VIEW ACCOUNTS →
     </button>
   </div>
@@ -740,7 +736,7 @@ const totalRdMaturity = activeRds.reduce(
       <b>{activeFds.length}</b>
     </div>
 
-    <button onClick={() => handleSectionChange("FD")}>
+    <button onClick={() => setActiveSection("FD")}>
       BOOK FD
     </button>
   </div>
@@ -758,7 +754,7 @@ const totalRdMaturity = activeRds.reduce(
       <b>{activeRds.length}</b>
     </div>
 
-    <button onClick={() => handleSectionChange("RD")}>
+    <button onClick={() => setActiveSection("RD")}>
       OPEN RD
     </button>
   </div>
@@ -796,15 +792,15 @@ const totalRdMaturity = activeRds.reduce(
   </div>
 </div>
               <div className="quick-services">
-                <div className="service-card" onClick={() => handleSectionChange("FUND_TRANSFER")}>
+                <div className="service-card" onClick={() => setActiveSection("FUND_TRANSFER")}>
                   💸 {text("fundTransfer", "Fund Transfer")}
                 </div>
 
-                <div className="service-card" onClick={() => handleSectionChange("TRANSACTIONS")}>
+                <div className="service-card" onClick={() => setActiveSection("TRANSACTIONS")}>
                   📄 {text("viewTransactions", "View Transactions")}
                 </div>
 
-                <div className="service-card" onClick={() => handleSectionChange("ACCOUNTS")}>
+                <div className="service-card" onClick={() => setActiveSection("ACCOUNTS")}>
                   💳 {text("accountDetails", "Account Details")}
                 </div>
               </div>
@@ -815,7 +811,7 @@ const totalRdMaturity = activeRds.reduce(
                   <div className="empty-payee">👤</div>
                   <h4>{text("noPayeeAdded", "No Payee Added")}</h4>
                   <p>{text("payeeText", "You haven’t added any payee. Add a payee and start transacting today.")}</p>
-                  <button onClick={() => handleSectionChange("FUND_TRANSFER")}>
+                  <button onClick={() => setActiveSection("FUND_TRANSFER")}>
                     {text("addPayee", "ADD PAYEE")}
                   </button>
                 </div>
@@ -854,7 +850,7 @@ const totalRdMaturity = activeRds.reduce(
                     </div>
                   ))}
 
-                  <button onClick={() => handleSectionChange("TRANSACTIONS")}>
+                  <button onClick={() => setActiveSection("TRANSACTIONS")}>
                     {text("viewAll", "VIEW ALL")}
                   </button>
                 </div>
@@ -863,9 +859,9 @@ const totalRdMaturity = activeRds.reduce(
                   <h3>{text("quickLinks", "Quick Links")}</h3>
 
                   <div className="quick-link-grid">
-                    <div onClick={() => handleSectionChange("ACCOUNTS")}>🏦<span>{text("accounts", "Accounts")}</span></div>
-                    <div onClick={() => handleSectionChange("FUND_TRANSFER")}>💸<span>{text("fundTransfer", "Fund Transfer")}</span></div>
-                    <div onClick={() => handleSectionChange("FD")}>💰<span>FD/RD</span></div>
+                    <div onClick={() => setActiveSection("ACCOUNTS")}>🏦<span>{text("accounts", "Accounts")}</span></div>
+                    <div onClick={() => setActiveSection("FUND_TRANSFER")}>💸<span>{text("fundTransfer", "Fund Transfer")}</span></div>
+                    <div onClick={() => setActiveSection("FD")}>💰<span>FD/RD</span></div>
                     <div>🛠<span>{text("services", "Services")}</span></div>
                     <div>🏦<span>{text("loans", "Loans")}</span></div>
                     <div>💳<span>{text("payCreditCardBill", "Pay Credit Card Bill")}</span></div>
@@ -1416,7 +1412,7 @@ const totalRdMaturity = activeRds.reduce(
             Copyright © 2019 Axis Bank, India | Disclaimer | Privacy policy |
             Best View | 🔒 Secured Login
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );
