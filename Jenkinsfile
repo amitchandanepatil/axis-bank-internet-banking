@@ -26,6 +26,29 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                dir('workspace/auth-service') {
+                    withSonarQubeEnv('axis-sonarqube') {
+                        sh '''
+                            ./mvnw sonar:sonar \
+                              -Dsonar.projectKey=axis-bank-internet-banking \
+                              -Dsonar.projectName="Axis Bank Internet Banking" \
+                              -Dsonar.java.binaries=target/classes
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
         stage('Build Docker Images') {
             steps {
                 sh '''
@@ -78,7 +101,7 @@ pipeline {
                         docker rm -f axis-frontend-container || true
                         docker rm -f axis-nginx-container || true
 
-                        docker compose down || true
+                        docker compose down --remove-orphans || true
                         docker compose pull
                         docker compose up -d
 
@@ -94,11 +117,15 @@ pipeline {
 
     post {
         success {
-            echo 'Application deployed successfully.'
+            echo 'Code quality passed and application deployed successfully.'
         }
 
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed. Review the SonarQube analysis or failed stage.'
+        }
+
+        always {
+            sh 'docker logout || true'
         }
     }
 }
