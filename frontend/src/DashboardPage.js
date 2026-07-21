@@ -18,6 +18,7 @@ function DashboardPage() {
   const [fixedDeposits, setFixedDeposits] = useState([]);
   const [recurringDeposits, setRecurringDeposits] = useState([]);
   const [activeSection, setActiveSection] = useState("DASHBOARD");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState("en");
   const [fdToClose, setFdToClose] = useState(null);
   const [rdToClose, setRdToClose] = useState(null);
@@ -52,6 +53,11 @@ function DashboardPage() {
       customer?.username ||
       "Customer"
     );
+  };
+
+  const selectSection = (section) => {
+    setActiveSection(section);
+    setMobileMenuOpen(false);
   };
 
   const scrollToMainContent = () => {
@@ -528,6 +534,15 @@ const totalRdMaturity = activeRds.reduce(
       </div>
 
       <div className="axis-prime-header">
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
+
         <div className="axis-header-brand">
           <img
             src="https://www.axis.bank.in/assets/images/logo-white.png"
@@ -564,44 +579,51 @@ const totalRdMaturity = activeRds.reduce(
       </div>
 
       <div className="dashboard-container">
-        <div className="sidebar">
+        {mobileMenuOpen && (
+          <div
+            className="sidebar-overlay"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
+        <div className={`sidebar ${mobileMenuOpen ? "sidebar-open" : ""}`}>
           <ul>
-            <li className={activeSection === "DASHBOARD" ? "active-menu" : ""} onClick={() => setActiveSection("DASHBOARD")}>
+            <li className={activeSection === "DASHBOARD" ? "active-menu" : ""} onClick={() => selectSection("DASHBOARD")}>
               🏠 {text("dashboard", "Dashboard")}
             </li>
 
-            <li className={activeSection === "ACCOUNTS" ? "active-menu" : ""} onClick={() => setActiveSection("ACCOUNTS")}>
+            <li className={activeSection === "ACCOUNTS" ? "active-menu" : ""} onClick={() => selectSection("ACCOUNTS")}>
               💳 {text("accounts", "Accounts")}
             </li>
 
-            <li className={activeSection === "FD" ? "active-menu" : ""} onClick={() => setActiveSection("FD")}>
+            <li className={activeSection === "FD" ? "active-menu" : ""} onClick={() => selectSection("FD")}>
               🏦 {text("fixedDeposit", "Fixed Deposit")}
             </li>
 
-            <li className={activeSection === "MY_FD" ? "active-menu" : ""} onClick={() => setActiveSection("MY_FD")}>
+            <li className={activeSection === "MY_FD" ? "active-menu" : ""} onClick={() => selectSection("MY_FD")}>
               💰 My Deposits
             </li>
 
-            <li className={activeSection === "RD" ? "active-menu" : ""} onClick={() => setActiveSection("RD")}>
+            <li className={activeSection === "RD" ? "active-menu" : ""} onClick={() => selectSection("RD")}>
               📈 {text("recurringDeposit", "Recurring Deposit")}
             </li>
 
             <li
   className={activeSection === "MY_RD" ? "active-menu" : ""}
-  onClick={() => setActiveSection("MY_RD")}
+  onClick={() => selectSection("MY_RD")}
 >
   💰 My RD
 </li>
 
-            <li className={activeSection === "FUND_TRANSFER" ? "active-menu" : ""} onClick={() => setActiveSection("FUND_TRANSFER")}>
+            <li className={activeSection === "FUND_TRANSFER" ? "active-menu" : ""} onClick={() => selectSection("FUND_TRANSFER")}>
               💸 {text("fundTransfer", "Fund Transfer")}
             </li>
 
-            <li className={activeSection === "TRANSACTIONS" ? "active-menu" : ""} onClick={() => setActiveSection("TRANSACTIONS")}>
+            <li className={activeSection === "TRANSACTIONS" ? "active-menu" : ""} onClick={() => selectSection("TRANSACTIONS")}>
               📄 {text("transactions", "Transactions")}
             </li>
 
-            <li className={activeSection === "PROFILE" ? "active-menu" : ""} onClick={() => setActiveSection("PROFILE")}>
+            <li className={activeSection === "PROFILE" ? "active-menu" : ""} onClick={() => selectSection("PROFILE")}>
               👤 {text("profile", "Profile")}
             </li>
 

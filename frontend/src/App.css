@@ -827,7 +827,7 @@ body.high-contrast button {
   padding-bottom: 25px;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE (LOGIN / REGISTER SHARED HEADER) */
 
 @media(max-width: 1000px) {
   .axis-header,
@@ -840,33 +840,11 @@ body.high-contrast button {
     margin-left: -20px;
   }
 
-  .axis-header-links,
-  .axis-prime-actions {
+  .axis-header-links {
     display: none;
   }
-
-  .dashboard-container {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    border-radius: 0;
-  }
-
-  .cards,
-  .quick-services,
-  .dashboard-widget-grid {
-    flex-direction: column;
-    display: flex;
-  }
-
-  .axis-product-row,
-  .recommend-row,
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
 }
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1016,6 +994,7 @@ body.high-contrast button {
 .product-demat {
   background: #f7fff7;
 }
+
 .dashboard-shell {
   height: 100vh;
   overflow: hidden;
@@ -1040,196 +1019,6 @@ body.high-contrast button {
 .main-content {
   height: calc(100vh - 104px);
   overflow-y: auto;
-}
-
-.transaction-section table td .primary-btn {
-  white-space: nowrap;
-}
-/* RD table compact like FD */
-.transaction-section table th,
-.transaction-section table td {
-  vertical-align: middle;
-}
-
-.transaction-section table th {
-  white-space: normal;
-}
-
-.transaction-section table td {
-  white-space: nowrap;
-}
-
-.transaction-section table td .primary-btn {
-  white-space: nowrap;
-  padding: 12px 22px;
-}
-
-/* ================= RESPONSIVE FIX ================= */
-
-@media (max-width: 1200px) {
-  .axis-product-row-modern {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-  }
-
-  .cards {
-    flex-wrap: wrap;
-  }
-
-  .card {
-    min-width: 220px;
-  }
-}
-
-@media (max-width: 900px) {
-  .axis-mini-strip {
-    padding: 0 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-    height: auto;
-    min-height: 32px;
-  }
-
-  .axis-prime-header {
-    padding: 10px 15px;
-    height: auto;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .axis-header-brand {
-    width: 180px;
-    margin-left: 0;
-  }
-
-  .axis-header-brand img {
-    width: 125px;
-  }
-
-  .open-word {
-    font-size: 30px;
-  }
-
-  .internet-text {
-    font-size: 15px;
-  }
-
-  .axis-prime-actions {
-    width: 100%;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .axis-prime-actions input {
-    width: 100%;
-  }
-
-  .dashboard-container {
-    flex-direction: column;
-    padding: 0;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    border-radius: 0;
-  }
-
-  .sidebar ul {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .sidebar li {
-    min-width: fit-content;
-    padding: 14px 18px;
-  }
-
-  .main-content {
-    padding: 16px;
-  }
-
-  .axis-welcome-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .axis-last-login {
-    text-align: left;
-  }
-
-  .cards,
-  .quick-services,
-  .dashboard-widget-grid {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .axis-product-row-modern {
-    grid-template-columns: 1fr;
-    padding: 18px;
-  }
-
-  .recommend-row,
-  .info-grid,
-  .quick-link-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .transaction-section {
-    overflow-x: auto;
-  }
-
-  .transaction-section table {
-    min-width: 850px;
-  }
-
-  .fund-transfer-form {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
-  .axis-prime-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .axis-prime-actions button {
-    width: 100%;
-  }
-
-  .language-select {
-    width: 100%;
-  }
-
-  .cards {
-    gap: 12px;
-  }
-
-  .card,
-  .dashboard-widget,
-  .transaction-section {
-    padding: 18px;
-  }
-
-  .axis-product-row-modern .axis-product-card {
-    min-height: auto;
-    padding: 22px 18px;
-  }
-
-  .product-icon {
-    font-size: 44px;
-  }
-
-  .modal-overlay {
-    padding: 15px;
-  }
-
-  .fd-close-modal {
-    width: 100%;
-  }
 }
 
 /* ===== LOGIN PAGE MOBILE FIX ===== */
@@ -1341,19 +1130,6 @@ body.high-contrast button {
     flex-direction: column !important;
     gap: 8px !important;
   }
-}
-/* Only table horizontal scroll fix */
-.transaction-section {
-  overflow-x: auto;
-  width: 100%;
-}
-
-.transaction-section table {
-  min-width: 900px;
-}
-
-.transaction-section::-webkit-scrollbar {
-  height: 8px;
 }
 
 /* =====================================================
@@ -1904,6 +1680,7 @@ body.high-contrast button {
     text-align: center;
   }
 }
+
 /* Password strength indicator */
 
 .password-strength-section {
@@ -2428,6 +2205,7 @@ body.high-contrast button {
     order: 2;
   }
 }
+
 .forgot-password-link {
   margin-top: 12px;
   margin-bottom: 20px;
@@ -2444,6 +2222,7 @@ body.high-contrast button {
   color: #7d0e3f;
   text-decoration: underline;
 }
+
 .forgot-header-back-button {
   padding: 11px 18px;
   border: 1px solid #a90f54;
@@ -2467,6 +2246,7 @@ body.high-contrast button {
     font-size: 13px;
   }
 }
+
 .password-input-wrapper {
     position: relative;
     width: 100%;
@@ -2500,4 +2280,308 @@ body.high-contrast button {
 
 .password-toggle-btn:hover {
     background: #efe7eb;
+}
+/* =====================================================
+   DASHBOARD-ONLY RESPONSIVE STYLES
+   Scoped entirely under .dashboard-shell so Login and
+   Register pages (which never render .dashboard-shell)
+   are completely unaffected.
+
+   Breakpoints are based purely on viewport WIDTH
+   (max-width media queries). They deliberately avoid
+   (hover: none) / (pointer: coarse) so that a mobile
+   browser's "Desktop site" mode - which reports a wide,
+   desktop-like viewport while still being a touch device -
+   keeps using the normal desktop layout below.
+===================================================== */
+
+/* Hamburger button is hidden by default (desktop). It is only
+   switched on inside the max-width: 900px query further down,
+   so desktop can never show it. */
+.dashboard-shell .mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(151, 20, 77, 0.4);
+  color: #97144d;
+  font-size: 20px;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* ---- Large tablets / small laptops ---- */
+@media (max-width: 1200px) {
+  .dashboard-shell .axis-product-row-modern {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+
+  .dashboard-shell .cards {
+    flex-wrap: wrap;
+  }
+
+  .dashboard-shell .card {
+    min-width: 220px;
+  }
+}
+
+/* ---- Tablets / narrow "Desktop site" widths / true mobile ---- */
+@media (max-width: 900px) {
+  /* Switch the app-shell from the fixed-height desktop layout
+     to a normal, page-scrollable layout so the sidebar can
+     never eat the whole screen. */
+  .dashboard-shell {
+    height: auto;
+    overflow: visible;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .dashboard-shell .axis-mini-strip {
+    height: auto;
+    min-height: 32px;
+    padding: 0 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .dashboard-shell .axis-prime-header {
+    display: flex;
+    align-items: center;
+    height: auto;
+    padding: 10px 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Row 1: hamburger + logo + "open | PRIME" stay grouped
+     together on a single line. */
+  .dashboard-shell .mobile-menu-toggle {
+    order: 0;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dashboard-shell .axis-header-brand {
+    order: 1;
+    flex: 0 0 auto;
+    width: 130px;
+    height: 56px;
+    margin-left: 0;
+  }
+
+  .dashboard-shell .axis-header-brand img {
+    width: 95px;
+  }
+
+  .dashboard-shell .open-text {
+    order: 2;
+    flex: 1 1 auto;
+    min-width: 80px;
+  }
+
+  .dashboard-shell .open-word {
+    font-size: 24px;
+  }
+
+  .dashboard-shell .internet-text {
+    font-size: 12px;
+  }
+
+  /* Row 2: language + logout sit side by side; search bar
+     takes its own full-width row underneath. */
+  .dashboard-shell .axis-prime-actions {
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .dashboard-shell .axis-prime-actions .language-select {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 130px;
+  }
+
+  .dashboard-shell .axis-prime-actions button {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 110px;
+  }
+
+  .dashboard-shell .axis-prime-actions input {
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .dashboard-shell .dashboard-container {
+    flex-direction: column;
+    padding: 0;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Hamburger toggle button: only exists visually at mobile
+     widths. It's rendered in JSX unconditionally, but stays
+     hidden by default (see base rule below) and is only shown
+     inside this max-width query, so desktop never shows it. */
+  .dashboard-shell .mobile-menu-toggle {
+    display: inline-flex;
+  }
+
+  /* Sidebar becomes an off-canvas drawer that slides in from
+     the left when toggled, instead of stacking full-width in
+     the page flow or scrolling horizontally. Every existing
+     menu item stays intact, just off-screen until opened. */
+  .dashboard-shell .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    width: 260px;
+    max-width: 80vw;
+    height: 100vh;
+    overflow-y: auto;
+    border-radius: 0;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 18px rgba(0, 0, 0, 0.25);
+  }
+
+  .dashboard-shell .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .dashboard-shell .sidebar ul {
+    display: block;
+  }
+
+  .dashboard-shell .sidebar li {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  }
+
+  .dashboard-shell .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+  }
+
+  .dashboard-shell .main-content {
+    height: auto;
+    overflow: visible;
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .dashboard-shell .axis-welcome-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .dashboard-shell .axis-last-login {
+    text-align: left;
+  }
+
+  .dashboard-shell .cards,
+  .dashboard-shell .quick-services,
+  .dashboard-shell .dashboard-widget-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Product cards (Accounts / FD / RD / Credit Cards / Demat) become
+     a horizontal swipeable row instead of stacking one below the
+     other, so the page doesn't turn into a long vertical scroll. */
+  .dashboard-shell .axis-product-row-modern {
+    display: flex;
+    flex-wrap: nowrap;
+    grid-template-columns: unset;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .dashboard-shell .axis-product-row-modern .axis-product-card {
+    flex: 0 0 auto;
+    width: 78vw;
+    max-width: 300px;
+    min-height: auto;
+    scroll-snap-align: start;
+  }
+
+  .dashboard-shell .recommend-row,
+  .dashboard-shell .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Quick Links is short icon+label items - 2 columns keeps it
+     compact instead of turning into a long single-column list. */
+  .dashboard-shell .quick-link-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .dashboard-shell .fund-transfer-form {
+    max-width: 100%;
+  }
+
+  /* Tables keep their own horizontal scroll container so the
+     page itself never scrolls sideways. */
+  .dashboard-shell .transaction-section {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dashboard-shell .transaction-section table {
+    min-width: 850px;
+  }
+}
+
+/* ---- Small phones ---- */
+@media (max-width: 600px) {
+  .dashboard-shell .cards {
+    gap: 12px;
+  }
+
+  .dashboard-shell .card,
+  .dashboard-shell .dashboard-widget,
+  .dashboard-shell .transaction-section {
+    padding: 18px;
+  }
+
+  .dashboard-shell .axis-product-row-modern .axis-product-card {
+    min-height: auto;
+    padding: 22px 18px;
+  }
+
+  .dashboard-shell .product-icon {
+    font-size: 44px;
+  }
+
+  .dashboard-shell .modal-overlay {
+    padding: 15px;
+  }
+
+  .dashboard-shell .fd-close-modal {
+    width: 100%;
+  }
+
+  .dashboard-shell .transaction-section table {
+    min-width: 900px;
+  }
 }
